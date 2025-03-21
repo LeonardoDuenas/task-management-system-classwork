@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Net;
+using System.Text.Json;
 
 using API.Data;
 
@@ -103,6 +105,20 @@ if(!app.Environment.IsDevelopment()){
     app.UseHttpsRedirection();
 }
 
+// Added this to catch 404 errors
+app.Use(async (context, next) =>
+{
+    await next();
+
+    if (context.Response.StatusCode == (int)HttpStatusCode.NotFound)
+    {
+        context.Response.ContentType = "application/json";
+        await context.Response.WriteAsync(JsonSerializer.Serialize(new { error = "The requested resource was not found." }));
+    }
+});
+
+
+app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 
