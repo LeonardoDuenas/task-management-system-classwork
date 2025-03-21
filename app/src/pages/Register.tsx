@@ -6,6 +6,7 @@ import { setBackgroundColor } from "@features/background/backgroundSlice";
 import axios from "axios";
 import { toastr } from "@utils/toastr";
 import PasswordConfirmation from "@components/PasswordConfirmation";
+import PasswordStrengthMeter from "@components/PasswordStrengthMeter";
 
 const Register = () => {
   const dispatch = useDispatch();
@@ -94,6 +95,7 @@ const Register = () => {
                 placeholder="Create a password"
               />
               <label htmlFor="inputPassword">Password</label>
+              <PasswordStrengthMeter password={password}/>
             </div>
           </div>
           <div className="col-md-6">
